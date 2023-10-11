@@ -2,7 +2,8 @@ const path = require("path");
 const express = require("express");
 const http = require("http");
 const socketio = require('socket.io')
-const formatMessage = require('./utils/messages')
+const formatMessage = require('./utils/messages');
+const { userJoin , getCurrentUser } = require('./utils/users')
 
 
 const app = express()
@@ -12,14 +13,21 @@ const io = socketio(server);
 const botName = 'ChatChordBot';
 
 io.on('connection', socket => {
-    console.log("New WS connection established");
-    socket.emit("message", formatMessage(botName, "Welcome to chatCord Room"));
+
+    socket.on('joinRoom' , ({username, room}) => { 
+        const user = userJoin( socket.id, username , room);
+        socket.join(user.room)
 
 
-    socket.broadcast.emit("message", formatMessage(botName,"A user has joined the chat"));
+        console.log("New WS connection established");
+        socket.emit("message", formatMessage(botName, "Welcome to chatCord Room"));
+    
+    
+        socket.broadcast.to(user.room).emit("message", formatMessage(botName,` ${user.username} has joined the chat`));
+    })
 
     socket.on("disconnect", () => {
-        io.emit("message", formatMessage(botName,"The user has left the chat"));
+        io.emit("message", formatMessage(botName,`${user.username} has left the chat`));
     })
 
     socket.on('chatMessage' , msg => {
