@@ -14,6 +14,6 @@ const socket = io();
 
    const msg = e.target.elements.msg.value;
 
-   console.log(msg);
+   socket.emit('chatMessage' , msg);
 
  })

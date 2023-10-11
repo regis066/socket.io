@@ -19,6 +19,10 @@ io.on('connection', socket => {
     socket.on("disconnect", () => {
         io.emit("message", "The user has left the chat");
     })
+
+    socket.on('chatMessage' , msg => {
+        console.log(msg);
+    })
 })
 app.use(express.static(path.join(__dirname, "public")))
 const PORT = 4000 || process.env.PORT;
