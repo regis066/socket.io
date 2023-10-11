@@ -21,7 +21,7 @@ io.on('connection', socket => {
     })
 
     socket.on('chatMessage' , msg => {
-        console.log(msg);
+        io.emit('message', msg);
     })
 })
 app.use(express.static(path.join(__dirname, "public")))
