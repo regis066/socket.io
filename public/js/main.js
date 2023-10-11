@@ -2,7 +2,8 @@ const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 
 
-const { username , room} = Qs.parse(location.search)
+const { username , room} = Qs.parse(location.search.substring(1));
+console.log(username, room);
 
 
 const socket = io();
