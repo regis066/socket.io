@@ -24,6 +24,9 @@ const socket = io();
 
    socket.emit('chatMessage' , msg);
 
+   e.target.elements.msg.value = '';
+   e.target.elements.msg.focus();
+
  })
 
  function outputMessage(msg){
